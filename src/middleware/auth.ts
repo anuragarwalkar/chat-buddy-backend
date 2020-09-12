@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import ErrorResponse from '../shared/errorResponse';
 import { Request, Response, NextFunction } from 'express';
 
-function auth (req: Request, res:Response, next:NextFunction){
+function auth (req: any, res:Response, next:NextFunction){
     let authHeader = null; 
     let cookieToken = null;
     let token = null;
@@ -26,10 +26,11 @@ function auth (req: Request, res:Response, next:NextFunction){
 
     // Checkig JWT.
     try {
-    // const decoded = jwt.verify(token, config.get('jwtPrivateKey'));
+    const jwtPrivateKey: string = process.env.JWT_PRIVATE_KEY || 'dummyKey';
+    const decoded = jwt.verify(token, jwtPrivateKey);
     
     // Adding decoded user in request object
-    // req['user'] = decoded;
+    req.user = decoded;
     
     // Allowing if token is valid.
     next();

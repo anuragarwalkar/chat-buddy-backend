@@ -27,7 +27,7 @@ const clientSchema = new mongoose.Schema(
 );
 
 clientSchema.methods.generateAuthToken = function (username: string, fullName: string, email: string) {
-  return jwt.sign({ username, fullName, email }, 'anurag');
+  return jwt.sign({ username, fullName, email }, process.env.JWT_PRIVATE_KEY || 'dummyKey');
 }
 
 const clientModel = mongoose.model("Users", clientSchema);
