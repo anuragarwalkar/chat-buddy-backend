@@ -10,13 +10,17 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotEnv from 'dotenv';
 import authMiddlware from '../middleware/auth';
+import config from 'config';
+
+// Environemt Config
+dotEnv.config();
 
 const app = express();
 const server = http.createServer(app);
 const io = sockets(server);
 
-// Environemt Config
-dotEnv.config()
+const { jwtPrivateKey, origin } = config as any;
+
 
 // Calling mongodb conncection method
 mongoDBConnection()
@@ -25,7 +29,8 @@ const port = process.env.PORT || 3000;
 
 // 3rd party cors module
 app.use(cors({
-  credentials:true
+  origin,
+  credentials:true,
 }));
 
 // Read Cookies
@@ -40,7 +45,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Authenticating middlware
 // ------------- Important -------------------------------------------------------
 if(process.env.NODE_ENV !== 'development'){  
-  if(!process.env.JWT_PRIVATE_KEY){
+  if(!jwtPrivateKey){
     console.error('FATAL ERROR: jwtPrivateKey is not defined');
     process.exit(1);
   };

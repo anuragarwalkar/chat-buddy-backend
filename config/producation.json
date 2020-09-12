@@ -1,0 +1,11 @@
+{
+    "name": "chat_buddy__producation",
+    "port" : {
+        "host": "localhost",
+        "name": "chatBuddy"
+    },
+    "origin": "",
+    "jwtPrivateKey": "",
+    "mongoDbUserName":"",
+    "mongoDbPassword":""
+}

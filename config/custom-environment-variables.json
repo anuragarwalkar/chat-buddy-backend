@@ -1,0 +1,5 @@
+{
+    "jwtPrivateKey": "JWT_PRIVATE_KEY",
+    "mongoPassword":"MONGO_PASSWORD",
+    "mongoUserName":"MONGO_USERNAME"
+}
