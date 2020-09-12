@@ -10,7 +10,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotEnv from 'dotenv';
 import authMiddlware from '../middleware/auth';
-import config from 'config';
+import * as config from 'config';
 
 // Environemt Config
 dotEnv.config();
