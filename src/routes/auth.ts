@@ -65,6 +65,10 @@ router.post('/sign-up',asyncHandler(async (req: Request, res:Response, next:Next
   
   // Getting Client details
   const {_id: userId, token } = clientDetails;
+
+  // Setting cookie 
+  res.cookie('access_token', token, { httpOnly: true });
+  res.cookie('isLoggedIn', true);
   
   // Sending final response
   res.status(201).send({success:true, data: { userId, email, username, token }});
