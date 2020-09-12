@@ -4,7 +4,7 @@
         "host": "localhost",
         "name": "chatBuddy"
     },
-    "origin": "",
+    "origin": "https://chat-buddy-node.herokuapp.com",
     "jwtPrivateKey": "",
     "mongoDbUserName":"",
     "mongoDbPassword":""
