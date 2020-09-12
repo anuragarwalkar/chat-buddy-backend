@@ -4,7 +4,7 @@
         "host": "localhost",
         "name": "chatBuddy"
     },
-    "origin": "https://anuragarwalkar.github.io/chat-buddy",
+    "origin": "https://anuragarwalkar.github.io",
     "jwtPrivateKey": "",
     "mongoDbUserName":"",
     "mongoDbPassword":""
