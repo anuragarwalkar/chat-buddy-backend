@@ -13,13 +13,28 @@ import authMiddlware from '../middleware/auth';
 import * as config from 'config';
 import user from '../routes/user';
 import chat from '../routes/chat';
+import session from 'express-session';
 
 // Environemt Config
 dotEnv.config();
 
+
 const app = express();
 const server = http.createServer(app);
 const io = sockets(server);
+
+const sessionConfig:any = {
+  secret: 'MYSECRET',
+  name: 'appName',
+  resave: false,
+  saveUninitialized: false,
+  cookie : {
+    sameSite: 'strict',
+    secure: true
+  }
+};
+
+app.set('trust proxy', 1); // trust first proxy
 
 const { jwtPrivateKey, origin } = config as any;
 
