@@ -11,6 +11,8 @@ import cors from 'cors';
 import dotEnv from 'dotenv';
 import authMiddlware from '../middleware/auth';
 import * as config from 'config';
+import user from '../routes/user';
+import chat from '../routes/chat';
 
 // Environemt Config
 dotEnv.config();
@@ -44,19 +46,23 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Authenticating middlware
 // ------------- Important -------------------------------------------------------
-if(process.env.NODE_ENV !== 'development'){  
-  if(!jwtPrivateKey){
-    console.error('FATAL ERROR: jwtPrivateKey is not defined');
-    process.exit(1);
-  };
+if(!jwtPrivateKey){
+  console.error('FATAL ERROR: jwtPrivateKey is not defined');
+  process.exit(1);
+};
 
 // Validate JWT Token on every request
 app.use('/api/v1', authMiddlware);
-}
 // ------------------------------------------------------------------------------
 
 // Auth Routes
 app.use('/api/auth', auth);
+
+// Users Routes 
+app.use('/api/v1/user', user);
+
+// Chat Routes 
+app.use('/api/v1/chat', chat);
 
 // Root Router 
 app.get('/', (req, res) => {

@@ -17,6 +17,10 @@ const clientSchema = new mongoose.Schema(
       type: String,
       required: true,
       minlength: 8
+    },
+    fullName: {
+      type: String,
+      required: true
     }
   },
   {
@@ -26,8 +30,8 @@ const clientSchema = new mongoose.Schema(
   }
 );
 
-clientSchema.methods.generateAuthToken = function (username: string, fullName: string, email: string) {
-  return jwt.sign({ username, fullName, email }, process.env.JWT_PRIVATE_KEY || 'dummyKey');
+clientSchema.methods.generateAuthToken = function (userId: string, username: string, fullName: string, email: string) {
+  return jwt.sign({ user: { username, fullName, email, userId } }, process.env.JWT_PRIVATE_KEY || 'dummyKey');
 }
 
 const clientModel = mongoose.model("Users", clientSchema);
