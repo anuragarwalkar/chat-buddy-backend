@@ -74,7 +74,7 @@ router.post('/sign-up', asyncHandler(async (req: Request, res: Response, next: N
   const clientDetails: any = await usersModel.create({ username, email, password, fullName });
 
   // Getting Client details
-  const { _id: userId, token } = clientDetails;
+  const { _id: userId } = clientDetails;
 
   // Generating JWT
   clientDetails.token = clientDetails.generateAuthToken(userId, username, fullName, email);
@@ -86,6 +86,8 @@ router.post('/sign-up', asyncHandler(async (req: Request, res: Response, next: N
     options.sameSite = 'none'
     options.secure = secure;
   }
+
+  const { token } = clientDetails;
 
   // Setting cookie 
   res.cookie('access_token', token, options);
