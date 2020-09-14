@@ -7,5 +7,6 @@
     "origin": "http://localhost:4200",
     "jwtPrivateKey": "",
     "mongoUserName":"",
-    "mongoPassword":""
+    "mongoPassword":"",
+    "expressSession": ""
 }

@@ -7,5 +7,6 @@
     "origin": "https://anuragarwalkar.github.io",
     "jwtPrivateKey": "",
     "mongoUserName":"",
-    "mongoPassword":""
+    "mongoPassword":"",
+    "expressSession": ""
 }

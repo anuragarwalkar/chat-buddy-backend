@@ -33,8 +33,8 @@ router.post('/sign-in', asyncHandler(async (req: Request, res: Response, next: N
   // Setting cookies into browser
   const httpOnly = true;
 
-  res.cookie('access_token', token, { httpOnly });
-  res.cookie('isLoggedIn', validCredentials);
+  res.cookie('access_token', token, { httpOnly , sameSite:'none', secure: true });
+  res.cookie('isLoggedIn', validCredentials, {sameSite:'none', secure: true});
 
 
   // Sending final response
@@ -75,8 +75,8 @@ router.post('/sign-up', asyncHandler(async (req: Request, res: Response, next: N
   clientDetails.token = clientDetails.generateAuthToken(userId, username, fullName, email);
 
   // Setting cookie 
-  res.cookie('access_token', token, { httpOnly: true });
-  res.cookie('isLoggedIn', true);
+  res.cookie('access_token', token, { httpOnly: true, sameSite:'none', secure: true });
+  res.cookie('isLoggedIn', true, {sameSite: 'none', secure: true });
 
   // Sending final response
   res.status(201).send({ success: true, data: { user: { userId, email, username, fullName }, token } });

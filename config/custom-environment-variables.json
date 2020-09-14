@@ -1,5 +1,6 @@
 {
     "jwtPrivateKey": "JWT_PRIVATE_KEY",
     "mongoPassword":"MONGO_PASSWORD",
-    "mongoUserName":"MONGO_USERNAME"
+    "mongoUserName":"MONGO_USERNAME",
+    "expressSession": "EXPRESS_SESSION"
 }

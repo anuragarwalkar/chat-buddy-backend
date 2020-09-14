@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { NextFunction } from 'express';
 import http from 'http';
 import sockets from 'socket.io';
 import jwt from 'jsonwebtoken';
@@ -13,30 +13,32 @@ import authMiddlware from '../middleware/auth';
 import * as config from 'config';
 import user from '../routes/user';
 import chat from '../routes/chat';
-import session from 'express-session';
+import ErrorResponse from '../shared/errorResponse';
+// import session from 'express-session';
 
 // Environemt Config
 dotEnv.config();
 
+const { jwtPrivateKey, origin, expressSession } = config as any;
 
 const app = express();
 const server = http.createServer(app);
 const io = sockets(server);
 
-const sessionConfig:any = {
-  secret: 'MYSECRET',
-  name: 'appName',
-  resave: false,
-  saveUninitialized: false,
-  cookie : {
-    sameSite: 'strict',
-    secure: true
-  }
-};
+// const sessionConfig:any = {
+//   secret: expressSession,
+//   resave: false,
+//   saveUninitialized: false,
+//   cookie : {
+//     sameSite: 'none',
+//     secure: true
+//   }
+// };
 
-app.set('trust proxy', 1); // trust first proxy
+// app.set('trust proxy', 1); // trust first proxy
 
-const { jwtPrivateKey, origin } = config as any;
+// Express session
+// app.use(session(sessionConfig))
 
 
 // Calling mongodb conncection method
@@ -87,16 +89,17 @@ app.get('/', (req, res) => {
 // Error logger
 app.use(errorLogger);
 
-io.use(function(socket: any, next){
+// Socket Authentication
+io.use((socket: any, next: NextFunction) => {
     if (socket.handshake.query && socket.handshake.query.token){
-      jwt.verify(socket.handshake.query.token, process.env.JWT_PRIVATE_KEY || 'dummyKey', function(err: any, decoded: any) {
-        if (err) return next(new Error('Authentication error'));
+      jwt.verify(socket.handshake.query.token, jwtPrivateKey, (err: any, decoded: any) => {
+        if (err) return next(new ErrorResponse('Authentication error', 401));
         socket.decoded = decoded;
         next();
       });
     }
     else {
-      next(new Error('Authentication error'));
+      next(new ErrorResponse('Authentication error', 401));
     }    
 })
 
