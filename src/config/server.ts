@@ -14,6 +14,7 @@ import * as config from 'config';
 import user from '../routes/user';
 import chat from '../routes/chat';
 import ErrorResponse from '../shared/errorResponse';
+import path from 'path';
 
 // Environemt Config
 dotEnv.config();
@@ -44,6 +45,9 @@ app.use(bodyParser.json());
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// Set Static folder
+app.use(express.static(path.join(__dirname, '../../public')));
+
 // Authenticating middlware
 // ------------- Important -------------------------------------------------------
 if(!jwtPrivateKey){
@@ -63,11 +67,6 @@ app.use('/api/v1/user', user);
 
 // Chat Routes 
 app.use('/api/v1/chat', chat);
-
-// Root Router 
-app.get('/', (req, res) => {
-  res.send('App is running...');
-});
 
 // Error logger
 app.use(errorLogger);
