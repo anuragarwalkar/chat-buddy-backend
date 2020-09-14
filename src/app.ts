@@ -15,7 +15,8 @@ io.on('connection', async (socket) => {
   
   console.log('connected client:', userId)
 
-  socket.on('sendMessage', async ({message, to, from}) => {
+  type sendMessageType =  {message: string, to: string, from: string};
+  socket.on('sendMessage', async ({message, to, from}: sendMessageType) => {
 
     const toUser: any = getUserById(to);
     const fromUser: any = getUserById(from);
