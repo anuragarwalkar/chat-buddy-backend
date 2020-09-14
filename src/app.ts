@@ -2,23 +2,23 @@ import { server, io, port } from './config/server';
 import { joinUser, getUserById, removeUser } from './utils/users';
 import { formatMessage } from './utils/utils';
 import { insertChatToDb } from './controller/chat';
+import { User } from './shared/models/user.model';
 
 
 io.on('connection', async (socket) => {
   const userId = socket.handshake.query.userId;
 
-  const userAdded = await joinUser(userId);
+  // Join user to users array;
+  await joinUser(userId);
 
-  if(userAdded) {
-    socket.join(userId);
-  }
+  socket.join(userId);
   
   console.log('connected client:', userId)
 
   socket.on('sendMessage', async ({message, to, from}) => {
 
-    const toUser = getUserById(to);
-    const fromUser = getUserById(from);
+    const toUser: any = getUserById(to);
+    const fromUser: any = getUserById(from);
 
     try {
       await insertChatToDb(from, to, message);
@@ -31,7 +31,6 @@ io.on('connection', async (socket) => {
       {...formatMessage(fromUser.fullName, message), recipientId: fromUser.userId});
     }
   })
-
 
   socket.on('disconnect', () => {
     const disconnectedClient = socket.handshake.query.userId;
