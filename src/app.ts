@@ -1,17 +1,18 @@
 import { server, io, port } from './config/server';
-import { joinUser, getUserById, removeUser } from './utils/users';
+import { joinUser, getUserById, dissconnectUser, forceDisconnectUser } from './utils/users';
 import { formatMessage } from './utils/utils';
 import { insertChatToDb } from './controller/chat';
-import { User } from './shared/models/user.model';
 
 
 io.on('connection', async (socket) => {
   const userId = socket.handshake.query.userId;
 
   // Join user to users array;
-  await joinUser(userId);
+  const user = await joinUser(userId);
 
   socket.join(userId);
+
+  io.emit('connectedUser', user); 
   
   console.log('connected client:', userId)
 
@@ -33,18 +34,9 @@ io.on('connection', async (socket) => {
     }
   })
 
-  socket.on('disconnect', () => {
-    const disconnectedClient = socket.handshake.query.userId;
-    removeUser(disconnectedClient);
-    console.log('Disconnected Client:', disconnectedClient)
-  });
+  socket.on('disconnect', dissconnectUser(socket, io));
 
-  socket.on('forceDisconnect', () => {
-    const forceDisconnectedClient = socket.handshake.query.userId;
-    socket.disconnect();
-    removeUser(forceDisconnectedClient);
-    console.log('Force Disconnected Client:', forceDisconnectedClient)
-  })
+  socket.on('forceDisconnect', forceDisconnectUser(socket, io))
 });
 
 server.listen(port, () => {
