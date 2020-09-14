@@ -1,4 +1,4 @@
-import express, { NextFunction, Response, Request } from 'express';
+import express, { NextFunction, Response, Request, CookieOptions } from 'express';
 import asyncHandler from '../middleware/async';
 import ErrorResponse from '../shared/errorResponse';
 import bcrypt from 'bcrypt';
@@ -30,12 +30,16 @@ router.post('/sign-in', asyncHandler(async (req: Request, res: Response, next: N
   // Generating JWT
   const token = user.generateAuthToken(userId, user.username, user.fullName, email);
 
-  // Setting cookies into browser
-  const httpOnly = true;
+
+  const options: CookieOptions = { httpOnly: true };
   const secure = process.env.NODE_ENV !== 'development';
 
-  res.cookie('access_token', token, { httpOnly , sameSite:'none', secure });
-  res.cookie('isLoggedIn', validCredentials, {sameSite:'none', secure});
+  if (secure) {
+    options.sameSite = 'none'
+    options.secure = secure;
+  }
+
+  res.cookie('access_token', token, options);
 
 
   // Sending final response
@@ -75,11 +79,16 @@ router.post('/sign-up', asyncHandler(async (req: Request, res: Response, next: N
   // Generating JWT
   clientDetails.token = clientDetails.generateAuthToken(userId, username, fullName, email);
 
+  const options: CookieOptions = { httpOnly: true };
   const secure = process.env.NODE_ENV !== 'development';
 
+  if (secure) {
+    options.sameSite = 'none'
+    options.secure = secure;
+  }
+
   // Setting cookie 
-  res.cookie('access_token', token, { httpOnly: true, sameSite:'none', secure });
-  res.cookie('isLoggedIn', true, {sameSite: 'none', secure });
+  res.cookie('access_token', token, options);
 
   // Sending final response
   res.status(201).send({ success: true, data: { user: { userId, email, username, fullName }, token } });
