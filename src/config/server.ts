@@ -14,32 +14,15 @@ import * as config from 'config';
 import user from '../routes/user';
 import chat from '../routes/chat';
 import ErrorResponse from '../shared/errorResponse';
-// import session from 'express-session';
 
 // Environemt Config
 dotEnv.config();
 
-const { jwtPrivateKey, origin, expressSession } = config as any;
+const { jwtPrivateKey, origin } = config as any;
 
 const app = express();
 const server = http.createServer(app);
 const io = sockets(server);
-
-// const sessionConfig:any = {
-//   secret: expressSession,
-//   resave: false,
-//   saveUninitialized: false,
-//   cookie : {
-//     sameSite: 'none',
-//     secure: true
-//   }
-// };
-
-// app.set('trust proxy', 1); // trust first proxy
-
-// Express session
-// app.use(session(sessionConfig))
-
 
 // Calling mongodb conncection method
 mongoDBConnection()
