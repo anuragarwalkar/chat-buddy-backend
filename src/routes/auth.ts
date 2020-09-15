@@ -3,6 +3,12 @@ import asyncHandler from '../middleware/async';
 import ErrorResponse from '../shared/errorResponse';
 import bcrypt from 'bcrypt';
 import usersModel from '../models/user';
+import passport from 'passport';
+import { generateAuthToken } from '../utils/utils';
+import { User } from '../shared/models/user.model';
+import config from 'config';
+import { Config } from '../shared/models/config.model';
+const { origin } = config as Config; 
 // import _ from 'lodash';
 
 const router = express.Router();
@@ -28,7 +34,7 @@ router.post('/sign-in', asyncHandler(async (req: Request, res: Response, next: N
   const userId = user._id.toString();
 
   // Generating JWT
-  const token = user.generateAuthToken(userId, user.username, user.fullName, email);
+  const token = generateAuthToken(userId, user.username, user.fullName, email);
 
 
   const options: CookieOptions = { httpOnly: true };
@@ -77,7 +83,7 @@ router.post('/sign-up', asyncHandler(async (req: Request, res: Response, next: N
   const { _id: userId } = clientDetails;
 
   // Generating JWT
-  clientDetails.token = clientDetails.generateAuthToken(userId, username, fullName, email);
+  clientDetails.token = generateAuthToken(userId, username, fullName, email);
 
   const options: CookieOptions = { httpOnly: true };
   const secure = process.env.NODE_ENV !== 'development';
@@ -95,5 +101,28 @@ router.post('/sign-up', asyncHandler(async (req: Request, res: Response, next: N
   // Sending final response
   res.status(201).send({ success: true, data: { user: { userId, email, username, fullName }, token } });
 }));
+
+// @route   GET /auth/google/callback
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+// @desc    Google auth callback
+router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
+  const options: CookieOptions = { httpOnly: true };
+  const secure = process.env.NODE_ENV !== 'development';
+
+  if (secure) {
+    options.sameSite = 'none'
+    options.secure = secure;
+  }
+
+  const { _id: userId, username, fullName, email } = req.user as User;
+  const token = generateAuthToken(userId, username, fullName, email);
+
+  // Setting cookie 
+  res.cookie('access_token', token, options);
+
+  // Redirecting client 
+  res.redirect(`${origin}/auth/?token=${token}`)
+})
 
 export default router;

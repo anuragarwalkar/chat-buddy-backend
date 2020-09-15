@@ -1,5 +1,10 @@
-const logger = (err: any, req: any, res: any, next: any) => {
-    let error = {...err};
+import { Request, Response, NextFunction } from 'express';
+interface CustomError extends Error {
+    statusCode: number;
+}
+
+const logger = (err: CustomError, req: Request, res: Response, next: NextFunction) => {
+    const error = {...err};
     error['message'] = err.message;
 
     const statusCode = error.statusCode || 500;
