@@ -4,6 +4,6 @@
         "host": "localhost",
         "name": "chatBuddy"
     },
-    "origin": "https://anuragarwalkar.github.io"
-
+    "origin": "https://anuragarwalkar.github.io",
+    "callbackUrl": "https://anuragarwalkar.github.io/chat-buddy"
 }
