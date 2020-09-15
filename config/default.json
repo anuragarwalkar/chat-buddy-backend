@@ -8,5 +8,7 @@
     "jwtPrivateKey": "",
     "mongoUserName":"",
     "mongoPassword":"",
-    "expressSession": ""
+    "expressSession": "",
+    "gcpClientId":"",
+    "gcpClientSecret":""
 }

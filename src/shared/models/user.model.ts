@@ -4,4 +4,5 @@ export interface User {
     fullName: string;
     userId: string;
     isOnline: boolean;
+    _id: string
 }

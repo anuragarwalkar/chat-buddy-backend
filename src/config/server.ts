@@ -1,6 +1,6 @@
-import express, { NextFunction } from 'express';
+import express, { Application, NextFunction } from 'express';
 import http from 'http';
-import sockets from 'socket.io';
+import sockets, { Socket } from 'socket.io';
 import jwt from 'jsonwebtoken';
 import auth from '../routes/auth';
 import errorLogger from '../middleware/logger';
@@ -15,18 +15,27 @@ import user from '../routes/user';
 import chat from '../routes/chat';
 import ErrorResponse from '../shared/errorResponse';
 import path from 'path';
+import passport from 'passport';
+
+import passportOauth from '../config/passport'
+import { Config } from '../shared/models/config.model';
+passportOauth(passport);
 
 // Environemt Config
 dotEnv.config();
 
-const { jwtPrivateKey, origin } = config as any;
+const { jwtPrivateKey, origin } = config as Config;
 
-const app = express();
+const app: Application = express();
 const server = http.createServer(app);
 const io = sockets(server);
 
 // Calling mongodb conncection method
-mongoDBConnection()
+mongoDBConnection();
+
+// Passport middleware
+app.use(passport.initialize())
+app.use(passport.session())
 
 const port = process.env.PORT || 3000;
 
@@ -55,8 +64,12 @@ if(!jwtPrivateKey){
   process.exit(1);
 };
 
+// Passport Middelware
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Validate JWT Token on every request
-app.use('/api/v1', authMiddlware);
+app.use('/api/v1', authMiddlware as any);
 // ------------------------------------------------------------------------------
 
 // Auth Routes
@@ -85,4 +98,4 @@ io.use((socket: any, next: NextFunction) => {
     }    
 })
 
-export {server, io, port};
+export { server, io, port };
