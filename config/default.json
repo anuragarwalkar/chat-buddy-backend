@@ -5,6 +5,7 @@
         "name": "chatBuddy"
     },
     "origin": "https://anuragarwalkar.github.io",
+    "callbackUrl": "https://anuragarwalkar.github.io/chat-buddy",
     "jwtPrivateKey": "",
     "mongoUserName":"",
     "mongoPassword":"",
