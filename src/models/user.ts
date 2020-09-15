@@ -15,12 +15,19 @@ const clientSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
       minlength: 8
     },
     fullName: {
       type: String,
       required: true
+    },
+    picture: {
+      type: String,
+      default: 'notProvided'
+    },
+    googleId: {
+      type: String,
+      default: 'notOauth'
     }
   },
   {
@@ -29,10 +36,6 @@ const clientSchema = new mongoose.Schema(
     timestamps: true
   }
 );
-
-clientSchema.methods.generateAuthToken = function (userId: string, username: string, fullName: string, email: string) {
-  return jwt.sign({ user: { username, fullName, email, userId } }, process.env.JWT_PRIVATE_KEY || 'dummyKey');
-}
 
 const clientModel = mongoose.model("Users", clientSchema);
 

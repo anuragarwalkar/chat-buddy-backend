@@ -1,11 +1,23 @@
 import jwt from 'jsonwebtoken';
 import ErrorResponse from '../shared/errorResponse';
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
+import config from 'config';
+import { Config } from '../shared/models/config.model';
+import { User } from '../shared/models/user.model';
+const { jwtPrivateKey } = config as Config;
 
-function auth (req: any, res:Response, next:NextFunction){
+interface AuthRequest extends Request {
+    cookies : {
+        access_token: string;
+    },
+    header: (type: string) => string,
+    user: Object | string;
+}
+
+const auth = (req: AuthRequest, res:Response, next:NextFunction): void =>{
     let authHeader = null; 
     let cookieToken = null;
-    let token = null;
+    let token: string = '';
 
     // Get the Authorization token if provided in header.
     authHeader = req.header('authorization');
@@ -26,7 +38,6 @@ function auth (req: any, res:Response, next:NextFunction){
 
     // Checkig JWT.
     try {
-    const jwtPrivateKey: string = process.env.JWT_PRIVATE_KEY || 'dummyKey';
     const decoded = jwt.verify(token, jwtPrivateKey);
     
     // Adding decoded user in request object
