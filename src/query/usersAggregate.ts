@@ -15,6 +15,7 @@ export const getAllUsers= (userId: string) => {
                 fullName: 1,
                 userId: '$_id',
                 _id: 0,
+                picture: 1
             }
         }
     ]
@@ -34,6 +35,7 @@ export const getUser = (userId: string) => {
                 fullName: 1,
                 userId: '$_id',
                 _id: 0,
+                picture: 1
             }
         }
     ]
