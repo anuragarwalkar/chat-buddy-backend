@@ -8,7 +8,7 @@ import { generateAuthToken } from '../utils/utils';
 import { User } from '../shared/models/user.model';
 import config from 'config';
 import { Config } from '../shared/models/config.model';
-const { origin } = config as Config; 
+const { callbackUrl } = config as Config; 
 // import _ from 'lodash';
 
 const router = express.Router();
@@ -122,7 +122,7 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
   res.cookie('access_token', token, options);
 
   // Redirecting client 
-  res.redirect(`${origin}/auth/?token=${token}`)
+  res.redirect(`${callbackUrl}/auth/?token=${token}`)
 })
 
 export default router;

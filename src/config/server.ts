@@ -24,11 +24,16 @@ passportOauth(passport);
 // Environemt Config
 dotEnv.config();
 
+
 const { jwtPrivateKey, origin } = config as Config;
 
 const app: Application = express();
 const server = http.createServer(app);
 const io = sockets(server);
+
+// To Enable Https
+app.enable("trust proxy");
+
 
 // Calling mongodb conncection method
 mongoDBConnection();

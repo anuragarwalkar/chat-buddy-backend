@@ -5,6 +5,7 @@ export interface Config extends IConfig {
     gcpClientId: string;
     jwtPrivateKey: string;
     origin: string;
+    callbackUrl: string;
     mongoUserName: string;
     mongoPassword: string;
 }
