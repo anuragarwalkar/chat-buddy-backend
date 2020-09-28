@@ -4,8 +4,8 @@
         "host": "localhost",
         "name": "chatBuddy"
     },
-    "origin": "https://anuragarwalkar.github.io",
-    "callbackUrl": "https://anuragarwalkar.github.io/chat-buddy",
+    "origin": "https://chat-buddy-289610.web.app",
+    "callbackUrl": "https://chat-buddy-289610.web.app",
     "jwtPrivateKey": "",
     "mongoUserName":"",
     "mongoPassword":"",
