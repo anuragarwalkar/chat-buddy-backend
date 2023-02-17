@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "npx --package typescript tsc -p .",
+    "build": "npx --package typescript@4.0.2 tsc -p .",
     "start": "node dist/app.js",
     "dev": "nodemon src/app.ts"
   },
