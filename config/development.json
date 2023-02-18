@@ -4,6 +4,6 @@
         "host": "localhost",
         "name": "chatBuddy"
     },
-    "origin": "http://localhost:4200",
-    "callbackUrl": "http://localhost:4200"
+    "origin": "https://chat-buddy-289610.web.app",
+    "callbackUrl": "https://chat-buddy-289610.web.app"
 }
