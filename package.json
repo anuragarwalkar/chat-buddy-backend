@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "npx --package typescript@4.0.2 tsc -p .",
-    "build-vercel": "npx --package typescript@4.0.2",
+    "build-vercel": "node -v",
     "start": "node dist/app.js",
     "dev": "nodemon src/app.ts"
   },
